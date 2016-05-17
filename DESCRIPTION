@@ -11,7 +11,7 @@ Depends:
     faoswsUtil,
     data.table
 Suggests:
-    ensure,
+    ensurer,
     dplyr,
     magrittr
 License: FAO
