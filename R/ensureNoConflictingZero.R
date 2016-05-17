@@ -47,7 +47,7 @@ ensureNoConflictingZero = function(data,
               value1ZeroValue2NonZero &
               value1NonZeroValue2Zero)
 
-    if(length(conflictProductionAreaHarvested) > 0)
+    if(length(conflictingZeroValues) > 0)
         stop("Conflict value exist in production area harvested")
 
     if(normalised){
