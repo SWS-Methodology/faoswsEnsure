@@ -7,10 +7,11 @@ ensureDataInput = function(data,
 
     if(!is.null(colnames)){
         missingColumn = requiredColumn[!requiredColumn %in% colnames(data)]
-        if(length(missingColumn) > 0)
+        if(length(missingColumn) > 0){
             missingColumnMsg = paste0(missingColumn, collapse = "\n\t")
-        stop("The following required column not in input data",
-             missingColumnMsg)
+            stop("The following required column not in input data",
+                 missingColumnMsg)
+            }
     }
     if(returnData)
         return(data)
