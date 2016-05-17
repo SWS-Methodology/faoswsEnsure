@@ -4,7 +4,7 @@
 ##' @param ensureColumn The variable to be ensured.
 ##' @param min The minimum bound of the variable
 ##' @param max The maximum bound of the variable
-##' @param indlucdeEndPoint Whether the end point of minimum and maximum should
+##' @param includeEndPoint Whether the end point of minimum and maximum should
 ##'     be included.
 ##' @param returnData logical, whether the data should be returned
 ##' @return The same data if all time series are imputed, otherwise an error.

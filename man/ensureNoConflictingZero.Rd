@@ -6,7 +6,7 @@
 values.}
 \usage{
 ensureNoConflictingZero(data, valueColumn1, valueColumn2, returnData = TRUE,
-  normalised = TRUE, denormaliseKey = "measuredElement")
+  normalised = TRUE, denormalisedKey = "measuredElement")
 }
 \arguments{
 \item{data}{The data to be checked.}

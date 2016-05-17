@@ -13,31 +13,29 @@ ensureProtectedData(data, domain = "agriculture", dataset = "aproduction",
   denormalisedKey = "measuredElement")
 }
 \arguments{
-\item{data}{The data.table object containing data to be
-saved back to the database. The current implementation only
-accepts data in the normalised form.}
+\item{data}{The data.table object containing data to be saved back to the
+database. The current implementation only accepts data in the normalised
+form.}
 
-\item{domain}{The domain name in the SWS where the data will be
-saved.}
+\item{domain}{The domain name in the SWS where the data will be saved.}
 
-\item{dataset}{The dataset name in the SWS where the data will be
-saved.}
+\item{dataset}{The dataset name in the SWS where the data will be saved.}
 
-\item{areaVar}{The column name corresponding to the geographic
-area.}
+\item{areaVar}{The column name corresponding to the geographic area.}
 
-\item{itemVar}{The column name corresponding to the commodity
-item.}
+\item{itemVar}{The column name corresponding to the commodity item.}
 
-\item{elementVar}{The column name corresponding to the measured
-element.}
+\item{elementVar}{The column name corresponding to the measured element.}
 
 \item{yearVar}{The column name corresponding to the year.}
 
+\item{flagObservationVar}{The column name corresponding to the observation
+status flag.}
+
 \item{flagMethodVar}{The column name corresponding to the method flag.}
 
-\item{protectedFlag}{The set of flag values which corresponds to
-values that should not be over written.}
+\item{protectedFlag}{The set of flag values which corresponds to values that
+should not be over written.}
 
 \item{returnData}{logical, whether the data should be returned.}
 

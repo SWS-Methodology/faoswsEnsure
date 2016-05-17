@@ -22,10 +22,10 @@ ensureNoConflictingZero = function(data,
                                    valueColumn2,
                                    returnData = TRUE,
                                    normalised = TRUE,
-                                   denormaliseKey = "measuredElement"){
+                                   denormalisedKey = "measuredElement"){
     dataCopy = copy(data)
     if(normalised){
-        dataCopy = denormalise(dataCopy, denormaliseKey = denormaliseKey)
+        dataCopy = denormalise(dataCopy, denormaliseKey = denormalisedKey)
     }
 
     ensureDataInput(dataCopy,

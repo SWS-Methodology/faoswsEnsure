@@ -13,6 +13,12 @@ ensureOutputFlags(data, flagObservationVar = "flagObservationStatus",
 \arguments{
 \item{data}{The data.table object to be checked}
 
+\item{flagObservationVar}{The column name corresponding
+to the observation status flag.}
+
+\item{flagObservationExpected}{The value of the observation
+status flag expected in the output.}
+
 \item{flagMethodVar}{The column name corresponding to the
 method flag.}
 
@@ -24,12 +30,6 @@ the output.}
 \item{normalised}{logical, whether the data is normalised}
 
 \item{denormalisedKey}{optional, only required if the input data is not}
-
-\item{flagObservationStatusVar}{The column name corresponding
-to the observation status flag.}
-
-\item{flagObservationStatusExpected}{The value of the observation
-status flag expected in the output.}
 }
 \value{
 The original data is returned if all the flag matches

@@ -5,8 +5,8 @@ Version: 0.0.0.9000
 Authors@R: person("Michael C. J.", "Kao", email = "michael.ka@fao.org", role = c("aut", "cre"))
 Description: The package ensure both inputs and outputs are valid for both
     functions and modules.
+URL: https://github.com/SWS-Methodology/faoswsEnsure
 Depends:
-    R (>= 3.3.0),
     faoswsFlag,
     faoswsUtil,
     data.table

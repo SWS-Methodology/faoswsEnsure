@@ -6,7 +6,7 @@
 ##'     status flag.
 ##' @param flagMethodVar The column name corresponding to the method flag.
 ##' @param flagTable The table containing valid/invalid flag combination. See
-##'     \data{flagValidTable} in \pkg{faoswsFlag}
+##'     the dataset flagValidTable in \pkg{faoswsFlag}
 ##' @param returnData logical, whether the data should be returned
 ##' @param normalised logical, whether the data is normalised
 ##' @param denormalisedKey optional, only required if the input data is not

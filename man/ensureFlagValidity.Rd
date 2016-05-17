@@ -25,7 +25,7 @@ status flag.}
 normalised.It is the name of the key that denormalises the data.}
 
 \item{flagTable}{The table containing valid/invalid flag combination. See
-\data{flagValidTable} in \pkg{faoswsFlag}}
+the dataset flagValidTable in \pkg{faoswsFlag}}
 }
 \value{
 The original data is returned if all flags are valid, otherwise an

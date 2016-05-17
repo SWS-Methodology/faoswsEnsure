@@ -7,23 +7,20 @@
 ##' checks whether the matching set contains official or semi official
 ##' values.
 ##'
-##' @param data The data.table object containing data to be
-##'     saved back to the database. The current implementation only
-##'     accepts data in the normalised form.
-##' @param domain The domain name in the SWS where the data will be
-##'     saved.
-##' @param dataset The dataset name in the SWS where the data will be
-##'     saved.
-##' @param areaVar The column name corresponding to the geographic
-##'     area.
-##' @param itemVar The column name corresponding to the commodity
-##'     item.
-##' @param elementVar The column name corresponding to the measured
-##'     element.
+##' @param data The data.table object containing data to be saved back to the
+##'     database. The current implementation only accepts data in the normalised
+##'     form.
+##' @param domain The domain name in the SWS where the data will be saved.
+##' @param dataset The dataset name in the SWS where the data will be saved.
+##' @param areaVar The column name corresponding to the geographic area.
+##' @param itemVar The column name corresponding to the commodity item.
+##' @param elementVar The column name corresponding to the measured element.
 ##' @param yearVar The column name corresponding to the year.
+##' @param flagObservationVar The column name corresponding to the observation
+##'     status flag.
 ##' @param flagMethodVar The column name corresponding to the method flag.
-##' @param protectedFlag The set of flag values which corresponds to
-##'     values that should not be over written.
+##' @param protectedFlag The set of flag values which corresponds to values that
+##'     should not be over written.
 ##' @param returnData logical, whether the data should be returned.
 ##' @param normalised logical, whether the data is normalised
 ##' @param denormalisedKey optional, only required if the input data is not

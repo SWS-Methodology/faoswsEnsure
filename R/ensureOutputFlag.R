@@ -2,9 +2,9 @@
 ##' to expectation.
 ##'
 ##' @param data The data.table object to be checked
-##' @param flagObservationStatusVar The column name corresponding
+##' @param flagObservationVar The column name corresponding
 ##'     to the observation status flag.
-##' @param flagObservationStatusExpected The value of the observation
+##' @param flagObservationExpected The value of the observation
 ##'     status flag expected in the output.
 ##' @param flagMethodVar The column name corresponding to the
 ##'     method flag.

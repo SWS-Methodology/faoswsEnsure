@@ -16,10 +16,10 @@ ensureValueRange(data, ensureColumn, min = 0, max = Inf,
 
 \item{max}{The maximum bound of the variable}
 
-\item{returnData}{logical, whether the data should be returned}
-
-\item{indlucdeEndPoint}{Whether the end point of minimum and maximum should
+\item{includeEndPoint}{Whether the end point of minimum and maximum should
 be included.}
+
+\item{returnData}{logical, whether the data should be returned}
 }
 \value{
 The same data if all time series are imputed, otherwise an error.
