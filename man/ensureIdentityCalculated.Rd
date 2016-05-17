@@ -5,11 +5,11 @@
 \title{Function to check whether the triplet (area harvested/production/yield) are
 calculated whereever possible.}
 \usage{
-ensureIdentityCalculated(dataToBeSaved, areaVar, yieldVar, prodVar,
-  returnData = TRUE, normalised = TRUE)
+ensureIdentityCalculated(data, areaVar, yieldVar, prodVar, returnData = TRUE,
+  normalised = TRUE)
 }
 \arguments{
-\item{dataToBeSaved}{The data.table to be saved back to the SWS.}
+\item{data}{The data.table to be saved back to the SWS.}
 
 \item{areaVar}{The column name corresponding to the area harvested.}
 

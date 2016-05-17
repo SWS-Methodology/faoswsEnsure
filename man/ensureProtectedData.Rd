@@ -4,14 +4,16 @@
 \alias{ensureProtectedData}
 \title{Function to check whether the data will over write protected data.}
 \usage{
-ensureProtectedData(dataToBeSaved, domain = "agriculture",
-  dataset = "aproduction", areaVar = "geographicAreaM49",
-  itemVar = "measuredItemCPC", elementVar = "measuredElement",
-  yearVar = "timePointYears", flagObservationVar = "flagObservationStatus",
-  flagMethodVar = "flagMethod", protectedFlag = c("-", "q", "p", "h", "c"))
+ensureProtectedData(data, domain = "agriculture", dataset = "aproduction",
+  areaVar = "geographicAreaM49", itemVar = "measuredItemCPC",
+  elementVar = "measuredElement", yearVar = "timePointYears",
+  flagObservationVar = "flagObservationStatus",
+  flagMethodVar = "flagMethod", protectedFlag = c("-", "q", "p", "h", "c"),
+  returnData = TRUE, normalised = TRUE,
+  denormalisedKey = "measuredElement")
 }
 \arguments{
-\item{dataToBeSaved}{The data.table object containing data to be
+\item{data}{The data.table object containing data to be
 saved back to the database. The current implementation only
 accepts data in the normalised form.}
 
@@ -36,6 +38,13 @@ element.}
 
 \item{protectedFlag}{The set of flag values which corresponds to
 values that should not be over written.}
+
+\item{returnData}{logical, whether the data should be returned.}
+
+\item{normalised}{logical, whether the data is normalised}
+
+\item{denormalisedKey}{optional, only required if the input data is not
+normalised.It is the name of the key that denormalises the data.}
 }
 \value{
 If the data set passes the test, then the original data

@@ -4,12 +4,11 @@
 \alias{ensureTimeSeriesImputed}
 \title{This function checks whether all time series within a dataset are imputed.}
 \usage{
-ensureTimeSeriesImputed(dataToBeSaved, key, valueColumn = "Value",
-  returnData = TRUE, normalised = TRUE,
-  denormalisedKey = "measuredElement")
+ensureTimeSeriesImputed(data, key, valueColumn = "Value", returnData = TRUE,
+  normalised = TRUE, denormalisedKey = "measuredElement")
 }
 \arguments{
-\item{dataToBeSaved}{The data to be saved back to the database}
+\item{data}{The data to be saved back to the database}
 
 \item{key}{The key which splits the data into individual timeseries.
 Generally the set c('geographicAreaM49', 'measuredItemCPC',
