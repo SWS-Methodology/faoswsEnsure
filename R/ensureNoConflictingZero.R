@@ -43,9 +43,10 @@ ensureNoConflictingZero = function(data,
         dataCopy[[valueColumn2]] == 0
 
     conflictingZeroValues =
-        which(productionAreaHarvestedNotMissing &
-              productionZeroAreaNonZero &
-              productionNonZeroAreaHarvestedZero)
+        which(bothValueNonMissing &
+              value1ZeroValue2NonZero &
+              value1NonZeroValue2Zero)
+
     if(length(conflictProductionAreaHarvested) > 0)
         stop("Conflict value exist in production area harvested")
 
