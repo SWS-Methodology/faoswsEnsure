@@ -24,6 +24,10 @@
 ##' @param flagMethodVar The column name corresponding to the method flag.
 ##' @param protectedFlag The set of flag values which corresponds to
 ##'     values that should not be over written.
+##' @param returnData logical, whether the data should be returned.
+##' @param normalised logical, whether the data is normalised
+##' @param denormalisedKey optional, only required if the input data is not
+##'     normalised.It is the name of the key that denormalises the data.
 ##'
 ##' @return If the data set passes the test, then the original data
 ##'     will be returned. Otherwise an error will be raised.

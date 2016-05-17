@@ -44,7 +44,6 @@ ensureProductionBalanced = function(data,
         imbalance = which(productionDifference > allowedDifference)
         if(length(imbalance) > 0){
             print(dataCopy[imbalance, ])
-            ## if(!all(na.omit(productionDifference < 2))){
             stop("Production is not balanced, the A * Y = P identity is not satisfied")
         }
     }

@@ -1,3 +1,14 @@
+##' Function to ensure the data input is correct.
+##'
+##' @param data The data to be checked.
+##' @param requiredColumn The required column names the data must contain.
+##' @param returnData logical, whether the data should be returned for pipe.
+##'
+##' @return If the data passes the check, the original data is returned,
+##'     otherwise an error.
+##'
+##' @export
+
 ensureDataInput = function(data,
                            requiredColumn = NULL,
                            returnData = TRUE){

@@ -25,8 +25,6 @@ ensureFlagValidity = function(data,
                               flagTable = flagValidTable){
 
     dataCopy = copy(data)
-    ## Basic checks
-    stopifnot(is(dataCopy, "data.table"))
 
     if(!normalised){
         dataCopy = normalise(dataCopy)
