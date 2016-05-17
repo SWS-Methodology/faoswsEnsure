@@ -33,8 +33,9 @@ ensureOutputFlags = function(data,
         dataCopy = normalise(dataCopy)
     }
 
-    if(!all(c(flagObservationVar, flagMethodVar) %in% colnames(dataCopy)))
-        stop("Flag columns are not in the data")
+    ensureDataInput(data = dataCopy,
+                    requiredColumn = c(flagObservationVar, flagMethodVar),
+                    returnData = FALSE)
 
     if(!all(data[[flagObservationVar]] %in%
             flagObservationExpected))
