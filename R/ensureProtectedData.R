@@ -40,31 +40,39 @@ ensureProtectedData = function(dataToBeSaved,
                                yearVar = "timePointYears",
                                flagObservationVar = "flagObservationStatus",
                                flagMethodVar = "flagMethod",
-                               protectedFlag = c("-", "q", "p", "h", "c")){
+                               protectedFlag = c("-", "q", "p", "h", "c"),
+                               returnData = TRUE,
+                               normalised = TRUE,
+                               denormalisedKey = "measuredElement"){
 
 
-    dataToBeSavedCopy = copy(dataToBeSaved)
-    setkeyv(dataToBeSavedCopy, col = c(areaVar, itemVar, elementVar, yearVar))
+    dataCopy = copy(dataToBeSaved)
+
+    if(!normalised){
+        dataCopy = normalise(dataCopy)
+    }
+
+    setkeyv(dataCopy, col = c(areaVar, itemVar, elementVar, yearVar))
 
 
-    if(NROW(dataToBeSavedCopy) > 0){
+    if(NROW(dataCopy) > 0){
         newKey = DatasetKey(
             domain = domain,
             dataset = dataset,
             dimensions = list(
                 Dimension(name = areaVar,
-                          keys = as.character(unique(dataToBeSavedCopy[[areaVar]]))),
+                          keys = as.character(unique(dataCopy[[areaVar]]))),
                 Dimension(name = itemVar,
-                          keys = as.character(unique(dataToBeSavedCopy[[itemVar]]))),
+                          keys = as.character(unique(dataCopy[[itemVar]]))),
                 Dimension(name = elementVar,
-                          keys = as.character(unique(dataToBeSavedCopy[[elementVar]]))),
+                          keys = as.character(unique(dataCopy[[elementVar]]))),
                 Dimension(name = yearVar,
-                          keys = as.character(unique(dataToBeSavedCopy[[yearVar]])))
+                          keys = as.character(unique(dataCopy[[yearVar]])))
             )
         )
         dbData = GetData(newKey)
         setkeyv(dbData, col = c(areaVar, itemVar, elementVar, yearVar))
-        matchSet = dbData[dataToBeSavedCopy, ]
+        matchSet = dbData[dataCopy, ]
         protectedData = matchSet[matchSet[[flagMethodVar]] %in% protectedFlag &
                                  !(matchSet[[flagObservationVar]]  == "M"), ]
         if(NROW(protectedData) > 0)
@@ -72,5 +80,11 @@ ensureProtectedData = function(dataToBeSaved,
     } else {
         warning("Data to be saved contain no entry")
     }
-    dataToBeSaved
+
+    if(!normalised){
+        dataCopy = denormalise(dataCopy, denormalisedKey)
+    }
+
+    if(returnData)
+        return(dataCopy)
 }
