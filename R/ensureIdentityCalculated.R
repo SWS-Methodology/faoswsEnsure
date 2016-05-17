@@ -1,7 +1,7 @@
 ##' Function to check whether the triplet (area harvested/production/yield) are
 ##' calculated whereever possible.
 ##'
-##' @param dataToBeSaved The data.table to be saved back to the SWS.
+##' @param data The data.table to be saved back to the SWS.
 ##' @param areaVar The column name corresponding to the area harvested.
 ##' @param yieldVar The column name corresponding to the yield.
 ##' @param prodVar The column name corresponding to produciton.
@@ -14,35 +14,36 @@
 ##'
 
 
-ensureIdentityCalculated = function(dataToBeSaved,
+ensureIdentityCalculated = function(data,
                                     areaVar,
                                     yieldVar,
                                     prodVar,
                                     returnData = TRUE,
                                     normalised = TRUE){
 
-    dataCopy = copy(dataToBeSaved)
-    ## Basic checks
-    stopifnot(is(dataCopy, "data.table"))
+    dataCopy = copy(data)
 
     if(normalised){
         dataCopy = denormalise(dataCopy, "measuredElement")
     }
-    stopifnot(all(c(areaVar, yieldVar, prodVar) %in% colnames(dataToBeSaved)))
+
+    ensureDataInput(data = dataCopy,
+                    requiredColumn = c(areaVar, yieldVar, prodVar),
+                    returnData = FALSE)
 
     for(i in seq(areaVar)){
         ## If the number of NA's is 1, then the identity is not calculated, as
         ## the number can be calculated by the other two non-missing values.
         containOneNA =
-            (is.na(dataToBeSaved[[areaVar[i]]]) +
-             is.na(dataToBeSaved[[yieldVar[i]]]) +
-             is.na(dataToBeSaved[[prodVar[i]]])) == 1
+            (is.na(dataCopy[[areaVar[i]]]) +
+             is.na(dataCopy[[yieldVar[i]]]) +
+             is.na(dataCopy[[prodVar[i]]])) == 1
 
         ## NOTE (Michael): However, yield can be a missing value when area
         ##                 harvested is zero.
         acceptableNACase =
-            (dataToBeSaved[[areaVar[i]]] == 0 &
-             is.na(dataToBeSaved[[yieldVar[i]]]))
+            (dataCopy[[areaVar[i]]] == 0 &
+             is.na(dataCopy[[yieldVar[i]]]))
 
         ## Return the index where identities are not calculated
         identityNotCalculated = setdiff(which(containOneNA), which(acceptableNACase))
@@ -56,5 +57,5 @@ ensureIdentityCalculated = function(dataToBeSaved,
         dataCopy = normalise(dataCopy)
     }
     if(returnData)
-        return(dataToBeSaved)
+        return(dataCopy)
 }

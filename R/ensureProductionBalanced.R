@@ -1,6 +1,6 @@
 ##' Function to check whether the production itdentity is satisfied.
 ##'
-##' @param dataToBeSaved The data.table to be saved back to the SWS.
+##' @param data The data.table to be saved back to the SWS.
 ##' @param areaVar The column name corresponding to the area harvested.
 ##' @param yieldVar The column name corresponding to the yield.
 ##' @param prodVar The column name corresponding to produciton.
@@ -13,7 +13,7 @@
 ##' @export
 ##'
 
-ensureProductionBalanced = function(dataToBeSaved,
+ensureProductionBalanced = function(data,
                                     areaVar,
                                     yieldVar,
                                     prodVar,
@@ -21,14 +21,16 @@ ensureProductionBalanced = function(dataToBeSaved,
                                     returnData = TRUE,
                                     normalised = TRUE){
 
-    dataCopy = copy(dataToBeSaved)
-    ## Basic checks
-    stopifnot(is(dataCopy, "data.table"))
+    dataCopy = copy(data)
 
     if(normalised){
         dataCopy = denormalise(dataCopy, "measuredElement")
     }
-    stopifnot(all(c(areaVar, yieldVar, prodVar) %in% colnames(dataCopy)))
+
+    ensureDataInput(data = dataCopy,
+                    requiredColumn = c(areaVar, yieldVar, prodVar),
+                    returnData = FALSE)
+
 
     for(i in seq(areaVar)){
         productionDifference =

@@ -1,6 +1,6 @@
 ##' This function checks whether all time series within a dataset are imputed.
 ##'
-##' @param dataToBeSaved The data to be saved back to the database
+##' @param data The data to be saved back to the database
 ##' @param key The key which splits the data into individual timeseries.
 ##'     Generally the set c('geographicAreaM49', 'measuredItemCPC',
 ##'     'measuredElement').
@@ -14,7 +14,7 @@
 ##' @export
 ##'
 
-ensureTimeSeriesImputed = function(dataToBeSaved,
+ensureTimeSeriesImputed = function(data,
                                    key,
                                    valueColumn = "Value",
                                    returnData = TRUE,
@@ -22,14 +22,15 @@ ensureTimeSeriesImputed = function(dataToBeSaved,
                                    denormalisedKey = "measuredElement"){
     ## The number of missing values should be either zero or all
     ## missing.
-    dataCopy = copy(dataToBeSaved)
+    dataCopy = copy(data)
 
     if(!normalised){
         dataCopy = normalise(dataCopy)
     }
 
-    if(!all(key %in% colnames(dataCopy)))
-        stop("Required column not in the dataset")
+    ensureDataInput(data = dataCopy,
+                    requiredColumn = c(key, valueColumn),
+                    returnData = FALSE)
 
     dataRemoved0M =
         remove0M(dataCopy, valueVars = valueColumn,

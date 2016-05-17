@@ -7,7 +7,7 @@
 ##' checks whether the matching set contains official or semi official
 ##' values.
 ##'
-##' @param dataToBeSaved The data.table object containing data to be
+##' @param data The data.table object containing data to be
 ##'     saved back to the database. The current implementation only
 ##'     accepts data in the normalised form.
 ##' @param domain The domain name in the SWS where the data will be
@@ -31,7 +31,7 @@
 ##' @export
 ##'
 
-ensureProtectedData = function(dataToBeSaved,
+ensureProtectedData = function(data,
                                domain = "agriculture",
                                dataset = "aproduction",
                                areaVar = "geographicAreaM49",
@@ -46,13 +46,17 @@ ensureProtectedData = function(dataToBeSaved,
                                denormalisedKey = "measuredElement"){
 
 
-    dataCopy = copy(dataToBeSaved)
+    dataCopy = copy(data)
+    setkeyv(dataCopy, col = c(areaVar, itemVar, elementVar, yearVar))
 
     if(!normalised){
         dataCopy = normalise(dataCopy)
     }
 
-    setkeyv(dataCopy, col = c(areaVar, itemVar, elementVar, yearVar))
+    ensureDataInput(data = dataCopy,
+                    requiredColumn = c(areaVar, itemVar, elementVar, yearVar),
+                    returnData = FALSE)
+
 
 
     if(NROW(dataCopy) > 0){
