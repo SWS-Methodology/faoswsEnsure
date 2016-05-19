@@ -1,7 +1,7 @@
 Package: faoswsEnsure
 Title: The package host standard check function for the Statistical Working
     System (SWS)
-Version: 0.0.0.9000
+Version: 0.1.0
 Authors@R: person("Michael C. J.", "Kao", email = "michael.kao@fao.org", role = c("aut", "cre"))
 Description: The package ensure both inputs and outputs are valid for both
     functions and modules.
