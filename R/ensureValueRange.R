@@ -24,10 +24,13 @@ ensureValueRange = function(data,
                     requiredColumn = ensureColumn,
                     returnData = FALSE)
 
-    outOfRange =
-        ifelse(includeEndPoint,
-               which(data[[ensureColumn]] <= min | data[[ensureColumn]] >= max),
-               which(data[[ensureColumn]] < min | data[[ensureColumn]] > max))
+    if(includeEndPoint){
+        outOfRange =
+            which(data[[ensureColumn]] < min | data[[ensureColumn]] > max)
+    } else {
+        outOfRange =
+            which(data[[ensureColumn]] <= min | data[[ensureColumn]] >= max)
+    }
 
     if(length(outOfRange) > 0)
         stop("Variable contain value out of range")
