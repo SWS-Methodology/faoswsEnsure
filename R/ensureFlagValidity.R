@@ -15,6 +15,8 @@
 ##'     error.
 ##'
 ##' @export
+##' @import faoswsFlag faoswsUtil
+##'
 
 ensureFlagValidity = function(data,
                               flagObservationVar = "flagObservationStatus",
