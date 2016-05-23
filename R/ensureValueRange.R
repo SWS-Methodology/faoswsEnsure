@@ -7,7 +7,11 @@
 ##' @param includeEndPoint Whether the end point of minimum and maximum should
 ##'     be included.
 ##' @param returnData logical, whether the data should be returned
-##' @return The same data if all time series are imputed, otherwise an error.
+##' @param getInvalidData logical, this will skip the test and extract the data
+##'     that is invalid.
+##' @return If getInvalidData is FALSE, then the data is returned when the test
+##'     is cleared, otherwise an error. If getInvalidData is TRUE, then the
+##'     subset of the data that is invalid is returned.
 ##'
 ##' @export
 ##'
@@ -18,7 +22,8 @@ ensureValueRange = function(data,
                             min = 0,
                             max = Inf,
                             includeEndPoint = TRUE,
-                            returnData = TRUE){
+                            returnData = TRUE,
+                            getInvalidData = FALSE){
 
     ensureDataInput(data = data,
                     requiredColumn = ensureColumn,
@@ -31,10 +36,17 @@ ensureValueRange = function(data,
         outOfRange =
             which(data[[ensureColumn]] <= min | data[[ensureColumn]] >= max)
     }
+    invalidData = data[outOfRange, ]
 
-    if(length(outOfRange) > 0)
-        stop("Variable contain value out of range")
-    if(returnData)
-        return(data)
+    if(getInvalidData){
+        return(invalidData)
+    } else {
+        if(nrow(invalidData) > 0){
+            stop("Variable contains values out of range")
+        }
+
+        if(returnData)
+            return(data)
+    }
 }
 

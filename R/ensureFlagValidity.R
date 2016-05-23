@@ -11,8 +11,11 @@
 ##' @param normalised logical, whether the data is normalised
 ##' @param denormalisedKey optional, only required if the input data is not
 ##'     normalised.It is the name of the key that denormalises the data.
-##' @return The original data is returned if all flags are valid, otherwise an
-##'     error.
+##' @param getInvalidData logical, this will skip the test and extract the data
+##'     that is invalid.
+##' @return If getInvalidData is FALSE, then the data is returned when the test
+##'     is cleared, otherwise an error. If getInvalidData is TRUE, then the
+##'     subset of the data that is invalid is returned.
 ##'
 ##' @export
 ##' @import faoswsFlag faoswsUtil
@@ -24,7 +27,8 @@ ensureFlagValidity = function(data,
                               returnData = TRUE,
                               normalised = TRUE,
                               denormalisedKey = "measuredElement",
-                              flagTable = flagValidTable){
+                              flagTable = flagValidTable,
+                              getInvalidData = FALSE){
 
     dataCopy = copy(data)
 
@@ -44,16 +48,25 @@ ensureFlagValidity = function(data,
         with(flagTable[flagTable$Valid, ],
              paste0("(", flagObservationStatus, ", ", flagMethod, ")"))
 
-    invalidFlagCombinations = setdiff(dataFlagCombination, tableFlagCombination)
+    invalidFlagCombinations =
+        which(!dataFlagCombination %in% unique(tableFlagCombination))
+    invalidData = data[invalidFlagCombinations, ]
 
-    if(length(invalidFlagCombinations) > 1){
-        print(invalidFlagCombinations)
-        stop("Invalid Combination flag exist, please provide correct combination")
-    }
-    if(!normalised){
-        dataCopy = denormalise(dataCopy, denormalisedKey)
-    }
+    if(getInvalidData){
+        if(!normalised){
+            invalidData = denormalise(invalidData, denormalisedKey)
+        }
+        return(invalidData)
+    } else {
+        if(length(invalidFlagCombinations) > 1){
+            print(invalidFlagCombinations)
+            stop("Invalid Combination flag exist")
+        }
+        if(!normalised){
+            dataCopy = denormalise(dataCopy, denormalisedKey)
+        }
 
-    if(returnData)
-        return(dataCopy)
+        if(returnData)
+            return(dataCopy)
+    }
 }

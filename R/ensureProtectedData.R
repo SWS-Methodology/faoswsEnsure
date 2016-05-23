@@ -25,9 +25,11 @@
 ##' @param normalised logical, whether the data is normalised
 ##' @param denormalisedKey optional, only required if the input data is not
 ##'     normalised.It is the name of the key that denormalises the data.
-##'
-##' @return If the data set passes the test, then the original data
-##'     will be returned. Otherwise an error will be raised.
+##' @param getInvalidData logical, this will skip the test and extract the data
+##'     that is invalid.
+##' @return If getInvalidData is FALSE, then the data is returned when the test
+##'     is cleared, otherwise an error. If getInvalidData is TRUE, then the
+##'     subset of the data that is invalid is returned.
 ##'
 ##' @export
 ##'
@@ -45,7 +47,8 @@ ensureProtectedData = function(data,
                                flagTable = flagValidTable,
                                returnData = TRUE,
                                normalised = TRUE,
-                               denormalisedKey = "measuredElement"){
+                               denormalisedKey = "measuredElement",
+                               getInvalidData = FALSE){
 
 
     dataCopy = copy(data)
@@ -82,24 +85,33 @@ ensureProtectedData = function(data,
 
         protectedFlagCombination =
             with(flagTable[flagTable$Protected, ],
-             paste0("(", flagObservationStatus, ", ", flagMethod, ")"))
+                 paste0("(", flagObservationStatus, ", ", flagMethod, ")"))
 
 
         matchSet[, `:=`(c(flagCombination),
                         paste0("(", flagObservationStatus, ", ", flagMethod, ")"))]
 
-        protectedData =
+        invalidData =
             matchSet[matchSet$flagCombination %in% protectedFlagCombination, ]
-        if(NROW(protectedData) > 0)
-            stop("Protected Data being over written!")
+
+
+        if(getInvalidData){
+            if(!normalised){
+                invalidData = denormalise(invalidData, denormalisedKey)
+            }
+            return(invalidData)
+        } else {
+            if(nrow(invalidData) > 0)
+                stop("Protected Data being over written!")
+            if(!normalised){
+                dataCopy = denormalise(dataCopy, denormalisedKey)
+            }
+
+            if(returnData)
+                return(dataCopy)
+        }
     } else {
         warning("Data to be saved contain no entry")
-    }
-
-    if(!normalised){
-        dataCopy = denormalise(dataCopy, denormalisedKey)
-    }
-
-    if(returnData)
         return(dataCopy)
+    }
 }

@@ -11,9 +11,11 @@
 ##' @param normalised logical, whether the data is normalised.
 ##' @param denormalisedKey optional, only required if the input data is not
 ##'     normalised.It is the name of the key that denormalises the data.
-##'
-##' @return If the data passes the check, the original data is returned,
-##'     otherwise an error.
+##' ##' @param getInvalidData logical, this will skip the test and extract the data
+##'     that is invalid.
+##' @return If getInvalidData is FALSE, then the data is returned when the test
+##'     is cleared, otherwise an error. If getInvalidData is TRUE, then the
+##'     subset of the data that is invalid is returned.
 ##'
 ##' @export
 
@@ -22,7 +24,8 @@ ensureNoConflictingZero = function(data,
                                    valueColumn2,
                                    returnData = TRUE,
                                    normalised = TRUE,
-                                   denormalisedKey = "measuredElement"){
+                                   denormalisedKey = "measuredElement",
+                                   getInvalidData = FALSE){
     dataCopy = copy(data)
     if(normalised){
         dataCopy = denormalise(dataCopy, denormaliseKey = denormalisedKey)
@@ -47,13 +50,22 @@ ensureNoConflictingZero = function(data,
               value1ZeroValue2NonZero &
               value1NonZeroValue2Zero)
 
-    if(length(conflictingZeroValues) > 0)
-        stop("Conflict value exist in production area harvested")
+    invalidData = data[conflictingZeroValues, ]
 
-    if(normalised){
-        dataCopy = normalise(dataCopy)
+    if(getInvalidData){
+        if(!normalised){
+            invalidData = denormalise(invalidData, denormalisedKey)
+        }
+        return(invalidData)
+    } else {
+        if(nrow(invalidData) > 0)
+            stop("Conflict value exist in production area harvested")
+
+        if(normalised){
+            dataCopy = normalise(dataCopy)
+        }
+
+        if(returnData)
+            return(dataCopy)
     }
-
-    if(returnData)
-        return(dataCopy)
 }
