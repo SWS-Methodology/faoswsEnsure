@@ -13,8 +13,11 @@
 ##' @param returnData logical, whether the data should be returned
 ##' @param normalised logical, whether the data is normalised
 ##' @param denormalisedKey optional, only required if the input data is not
-##' @return The original data is returned if all the flag matches
-##'     those expected, otherwise an error is raised.
+##' @param getInvalidData logical, this will skip the test and extract the data
+##'     that is invalid.
+##' @return If getInvalidData is FALSE, then the data is returned when the test
+##'     is cleared, otherwise an error. If getInvalidData is TRUE, then the
+##'     subset of the data that is invalid is returned.
 ##'
 ##' @export
 ##'
@@ -26,7 +29,8 @@ ensureOutputFlags = function(data,
                              flagMethodExpected,
                              returnData = TRUE,
                              normalised = TRUE,
-                             denormalisedKey = "measuredElement"){
+                             denormalisedKey = "measuredElement",
+                             getInvalidData = FALSE){
     dataCopy = copy(data)
 
     if(!normalised){
