@@ -8,7 +8,7 @@ ensureProtectedData(data, domain = "agriculture", dataset = "aproduction",
   areaVar = "geographicAreaM49", itemVar = "measuredItemCPC",
   elementVar = "measuredElement", yearVar = "timePointYears",
   flagObservationVar = "flagObservationStatus",
-  flagMethodVar = "flagMethod", protectedFlag = c("-", "q", "p", "h", "c"),
+  flagMethodVar = "flagMethod", flagTable = flagValidTable,
   returnData = TRUE, normalised = TRUE,
   denormalisedKey = "measuredElement")
 }
@@ -34,8 +34,8 @@ status flag.}
 
 \item{flagMethodVar}{The column name corresponding to the method flag.}
 
-\item{protectedFlag}{The set of flag values which corresponds to values that
-should not be over written.}
+\item{flagTable}{The flag table containing the validity of the flags. see
+data{faoswsFlag::flagValidTable} for an example.}
 
 \item{returnData}{logical, whether the data should be returned.}
 

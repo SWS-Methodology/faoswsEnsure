@@ -19,8 +19,8 @@
 ##' @param flagObservationVar The column name corresponding to the observation
 ##'     status flag.
 ##' @param flagMethodVar The column name corresponding to the method flag.
-##' @param protectedFlag The set of flag values which corresponds to values that
-##'     should not be over written.
+##' @param flagTable The flag table containing the validity of the flags. see
+##'     data{faoswsFlag::flagValidTable} for an example.
 ##' @param returnData logical, whether the data should be returned.
 ##' @param normalised logical, whether the data is normalised
 ##' @param denormalisedKey optional, only required if the input data is not
@@ -31,6 +31,7 @@
 ##'
 ##' @export
 ##'
+##' @import faoswsFlag
 
 ensureProtectedData = function(data,
                                domain = "agriculture",
@@ -41,7 +42,7 @@ ensureProtectedData = function(data,
                                yearVar = "timePointYears",
                                flagObservationVar = "flagObservationStatus",
                                flagMethodVar = "flagMethod",
-                               protectedFlag = c("-", "q", "p", "h", "c"),
+                               flagTable = flagValidTable,
                                returnData = TRUE,
                                normalised = TRUE,
                                denormalisedKey = "measuredElement"){
@@ -78,8 +79,17 @@ ensureProtectedData = function(data,
         dbData = GetData(newKey)
         setkeyv(dbData, col = c(areaVar, itemVar, elementVar, yearVar))
         matchSet = dbData[dataCopy, ]
-        protectedData = matchSet[matchSet[[flagMethodVar]] %in% protectedFlag &
-                                 !(matchSet[[flagObservationVar]]  == "M"), ]
+
+        protectedFlagCombination =
+            with(flagTable[flagTable$Protected, ],
+             paste0("(", flagObservationStatus, ", ", flagMethod, ")"))
+
+
+        matchSet[, `:=`(c(flagCombination),
+                        paste0("(", flagObservationStatus, ", ", flagMethod, ")"))]
+
+        protectedData =
+            matchSet[matchSet$flagCombination %in% protectedFlagCombination, ]
         if(NROW(protectedData) > 0)
             stop("Protected Data being over written!")
     } else {
