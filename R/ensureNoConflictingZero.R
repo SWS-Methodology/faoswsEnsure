@@ -11,7 +11,7 @@
 ##' @param normalised logical, whether the data is normalised.
 ##' @param denormalisedKey optional, only required if the input data is not
 ##'     normalised.It is the name of the key that denormalises the data.
-##' ##' @param getInvalidData logical, this will skip the test and extract the data
+##' @param getInvalidData logical, this will skip the test and extract the data
 ##'     that is invalid.
 ##' @return If getInvalidData is FALSE, then the data is returned when the test
 ##'     is cleared, otherwise an error. If getInvalidData is TRUE, then the
@@ -50,11 +50,11 @@ ensureNoConflictingZero = function(data,
               value1ZeroValue2NonZero &
               value1NonZeroValue2Zero)
 
-    invalidData = data[conflictingZeroValues, ]
+    invalidData = dataCopy[conflictingZeroValues, ]
 
     if(getInvalidData){
         if(!normalised){
-            invalidData = denormalise(invalidData, denormalisedKey)
+            invalidData = normalise(invalidData)
         }
         return(invalidData)
     } else {
