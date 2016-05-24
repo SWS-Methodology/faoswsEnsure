@@ -5,7 +5,7 @@
 \title{This function checks whether the values are within valid range}
 \usage{
 ensureValueRange(data, ensureColumn, min = 0, max = Inf,
-  includeEndPoint = TRUE, returnData = TRUE)
+  includeEndPoint = TRUE, returnData = TRUE, getInvalidData = FALSE)
 }
 \arguments{
 \item{data}{The data to be saved back to the database}
@@ -20,9 +20,14 @@ ensureValueRange(data, ensureColumn, min = 0, max = Inf,
 be included.}
 
 \item{returnData}{logical, whether the data should be returned}
+
+\item{getInvalidData}{logical, this will skip the test and extract the data
+that is invalid.}
 }
 \value{
-The same data if all time series are imputed, otherwise an error.
+If getInvalidData is FALSE, then the data is returned when the test
+    is cleared, otherwise an error. If getInvalidData is TRUE, then the
+    subset of the data that is invalid is returned.
 }
 \description{
 This function checks whether the values are within valid range

@@ -6,7 +6,8 @@
 values.}
 \usage{
 ensureNoConflictingZero(data, valueColumn1, valueColumn2, returnData = TRUE,
-  normalised = TRUE, denormalisedKey = "measuredElement")
+  normalised = TRUE, denormalisedKey = "measuredElement",
+  getInvalidData = FALSE)
 }
 \arguments{
 \item{data}{The data to be checked.}
@@ -21,10 +22,14 @@ ensureNoConflictingZero(data, valueColumn1, valueColumn2, returnData = TRUE,
 
 \item{denormalisedKey}{optional, only required if the input data is not
 normalised.It is the name of the key that denormalises the data.}
+
+\item{getInvalidData}{logical, this will skip the test and extract the data
+that is invalid.}
 }
 \value{
-If the data passes the check, the original data is returned,
-    otherwise an error.
+If getInvalidData is FALSE, then the data is returned when the test
+    is cleared, otherwise an error. If getInvalidData is TRUE, then the
+    subset of the data that is invalid is returned.
 }
 \description{
 In the production domain, when production is zero, area harvested can not be

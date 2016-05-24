@@ -5,7 +5,8 @@
 \title{This function checks whether all time series within a dataset are imputed.}
 \usage{
 ensureTimeSeriesImputed(data, key, valueColumn = "Value", returnData = TRUE,
-  normalised = TRUE, denormalisedKey = "measuredElement")
+  normalised = TRUE, denormalisedKey = "measuredElement",
+  getInvalidData = FALSE)
 }
 \arguments{
 \item{data}{The data to be saved back to the database}
@@ -22,9 +23,14 @@ Generally the set c('geographicAreaM49', 'measuredItemCPC',
 
 \item{denormalisedKey}{optional, only required if the input data is not
 normalised.It is the name of the key that denormalises the data.}
+
+\item{getInvalidData}{logical, this will skip the test and extract the data
+that is invalid.}
 }
 \value{
-The same data if all time series are imputed, otherwise an error.
+If getInvalidData is FALSE, then the data is returned when the test
+    is cleared, otherwise an error. If getInvalidData is TRUE, then the
+    subset of the data that is invalid is returned.
 }
 \description{
 This function checks whether all time series within a dataset are imputed.

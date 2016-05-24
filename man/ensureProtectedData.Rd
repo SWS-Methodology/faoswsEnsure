@@ -10,7 +10,7 @@ ensureProtectedData(data, domain = "agriculture", dataset = "aproduction",
   flagObservationVar = "flagObservationStatus",
   flagMethodVar = "flagMethod", flagTable = flagValidTable,
   returnData = TRUE, normalised = TRUE,
-  denormalisedKey = "measuredElement")
+  denormalisedKey = "measuredElement", getInvalidData = FALSE)
 }
 \arguments{
 \item{data}{The data.table object containing data to be saved back to the
@@ -43,10 +43,14 @@ data{faoswsFlag::flagValidTable} for an example.}
 
 \item{denormalisedKey}{optional, only required if the input data is not
 normalised.It is the name of the key that denormalises the data.}
+
+\item{getInvalidData}{logical, this will skip the test and extract the data
+that is invalid.}
 }
 \value{
-If the data set passes the test, then the original data
-    will be returned. Otherwise an error will be raised.
+If getInvalidData is FALSE, then the data is returned when the test
+    is cleared, otherwise an error. If getInvalidData is TRUE, then the
+    subset of the data that is invalid is returned.
 }
 \description{
 Certain data in the Statistical Working System should not be over

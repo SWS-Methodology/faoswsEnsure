@@ -7,7 +7,8 @@ the flagValidTable.}
 \usage{
 ensureFlagValidity(data, flagObservationVar = "flagObservationStatus",
   flagMethodVar = "flagMethod", returnData = TRUE, normalised = TRUE,
-  denormalisedKey = "measuredElement", flagTable = flagValidTable)
+  denormalisedKey = "measuredElement", flagTable = flagValidTable,
+  getInvalidData = FALSE)
 }
 \arguments{
 \item{data}{The data to be checked}
@@ -26,10 +27,14 @@ normalised.It is the name of the key that denormalises the data.}
 
 \item{flagTable}{The table containing valid/invalid flag combination. See
 the dataset flagValidTable in \pkg{faoswsFlag}}
+
+\item{getInvalidData}{logical, this will skip the test and extract the data
+that is invalid.}
 }
 \value{
-The original data is returned if all flags are valid, otherwise an
-    error.
+If getInvalidData is FALSE, then the data is returned when the test
+    is cleared, otherwise an error. If getInvalidData is TRUE, then the
+    subset of the data that is invalid is returned.
 }
 \description{
 This function checks whether the flags in the data are valid according to

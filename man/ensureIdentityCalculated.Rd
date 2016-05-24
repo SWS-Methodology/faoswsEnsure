@@ -6,7 +6,7 @@
 calculated whereever possible.}
 \usage{
 ensureIdentityCalculated(data, areaVar, yieldVar, prodVar, returnData = TRUE,
-  normalised = TRUE)
+  normalised = TRUE, getInvalidData = FALSE)
 }
 \arguments{
 \item{data}{The data.table to be saved back to the SWS.}
@@ -20,11 +20,14 @@ ensureIdentityCalculated(data, areaVar, yieldVar, prodVar, returnData = TRUE,
 \item{returnData}{logical, whether the data should be returned.}
 
 \item{normalised}{logical, whether the data is normalised}
+
+\item{getInvalidData}{logical, this will skip the test and extract the data
+that is invalid.}
 }
 \value{
-If the data satisfy the production identity, then the
-    original data to be tested is returned. Otherwise, an error is
-    raised.
+If getInvalidData is FALSE, then the data is returned when the test
+    is cleared, otherwise an error. If getInvalidData is TRUE, then the
+    subset of the data that is invalid is returned.
 }
 \description{
 Function to check whether the triplet (area harvested/production/yield) are
