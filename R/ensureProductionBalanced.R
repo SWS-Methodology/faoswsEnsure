@@ -48,8 +48,8 @@ ensureProductionBalanced = function(data,
 
     invalidData = dataCopy[imbalance, ]
     if(getInvalidData){
-        if(!normalised){
-            invalidData = denormalise(invalidData, denormalisedKey)
+        if(normalised){
+            invalidData = normalise(invalidData)
         }
         return(invalidData)
     } else {
