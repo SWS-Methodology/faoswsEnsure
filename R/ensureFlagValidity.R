@@ -41,8 +41,8 @@ ensureFlagValidity = function(data,
                     returnData = FALSE)
 
     dataFlagCombination =
-        unique(paste0("(", dataCopy[[flagObservationVar]], ", ",
-                      dataCopy[[flagMethodVar]], ")"))
+        paste0("(", dataCopy[[flagObservationVar]], ", ",
+               dataCopy[[flagMethodVar]], ")")
 
     tableFlagCombination =
         with(flagTable[flagTable$Valid, ],
@@ -50,7 +50,7 @@ ensureFlagValidity = function(data,
 
     invalidFlagCombinations =
         which(!dataFlagCombination %in% unique(tableFlagCombination))
-    invalidData = data[invalidFlagCombinations, ]
+    invalidData = dataCopy[invalidFlagCombinations, ]
 
     if(getInvalidData){
         if(!normalised){
