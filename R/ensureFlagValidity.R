@@ -59,7 +59,6 @@ ensureFlagValidity = function(data,
         return(invalidData)
     } else {
         if(length(invalidFlagCombinations) > 1){
-            print(invalidFlagCombinations)
             stop("Invalid Combination flag exist")
         }
         if(!normalised){
