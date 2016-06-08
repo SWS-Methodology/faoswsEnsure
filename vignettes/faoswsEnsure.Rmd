@@ -37,14 +37,6 @@ illustrate the functionalities and provide example for the rest of the
 document.
 
 ```{r }
-## Need to have missing column
-
-## Need to have invalid flag
-
-## Need to over-write protected data
-
-## Need to have value in the wrong range
-
 library(data.table)
 test_data =
     data.table(geographicAreaM49 = rep("100", 10),
@@ -78,10 +70,11 @@ the standard of the package and have the following component.
 
 2. The function should have a `returnData` arguement, when set to TRUE the
    original data should be returned if no error was detected for sequential
-   tests. This is based on the same philosphy as the `ensurer` package.
-   Nevertheless, there are cases when we do not want to return the data and
-   simply test whether the data is valid, then the arguement can simply be
-   set to FALSE.
+   tests. This is based on the same philosphy as the
+   [ensurer](https://cran.r-project.org/web/packages/ensurer/vignettes/ensurer.html)
+   package. Nevertheless, there are cases when we do not want to return the
+   data and simply test whether the data is valid, then the arguement can
+   simply be set to FALSE.
 
 3. The function must have an `getInvalidData` arguement and outputs the
    invalid data.
@@ -216,7 +209,7 @@ the input validation, but with the following addition test:
 * The destination data cell is not protected
 
 
-```{r eval = FALSE}
+```{r error = TRUE, purl = FALSE}
 test_data %>%
     ensureValueRange(data = .,
                      ensureColumn = "Value",
@@ -255,7 +248,12 @@ fulfilled.
 
 
 ```{r error = TRUE, purl = FALSE}
+library(faoswsProcessing)
 test_data %>%
+    remove0M(data = .,
+             valueVars = "Value",
+             flagVars = "flagObservationStatus",
+             missingFlag = "M") %>%
     ensureTimeSeriesImputed(data = .,
                             key = c("geographicAreaM49",
                                     "measuredItemCPC",

@@ -79,10 +79,11 @@ test_data =
 ##'
 ##' 2. The function should have a `returnData` arguement, when set to TRUE the
 ##'    original data should be returned if no error was detected for sequential
-##'    tests. This is based on the same philosphy as the `ensurer` package.
-##'    Nevertheless, there are cases when we do not want to return the data and
-##'    simply test whether the data is valid, then the arguement can simply be
-##'    set to FALSE.
+##'    tests. This is based on the same philosphy as the
+##'    [ensurer](https://cran.r-project.org/web/packages/ensurer/vignettes/ensurer.html)
+##'    package. Nevertheless, there are cases when we do not want to return the
+##'    data and simply test whether the data is valid, then the arguement can
+##'    simply be set to FALSE.
 ##'
 ##' 3. The function must have an `getInvalidData` arguement and outputs the
 ##'    invalid data.
@@ -245,7 +246,12 @@ test_data %>%
 ##' fulfilled.
 ##'
 
+library(faoswsProcessing)
 test_data %>%
+    remove0M(data = .,
+             valueVars = "Value",
+             flagVars = "observationStatusFlag",
+             missingFlag = "M") %>%
     ensureTimeSeriesImputed(data = .,
                             key = c("geographicAreaM49",
                                     "measuredItemCPC",
