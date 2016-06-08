@@ -52,12 +52,11 @@ ensureProtectedData = function(data,
 
 
     dataCopy = copy(data)
-    setkeyv(dataCopy, col = c(areaVar, itemVar, elementVar, yearVar))
 
     if(!normalised){
         dataCopy = normalise(dataCopy)
     }
-
+    setkeyv(dataCopy, col = c(areaVar, itemVar, elementVar, yearVar))
     ensureDataInput(data = dataCopy,
                     requiredColumn = c(areaVar, itemVar, elementVar, yearVar),
                     returnData = FALSE)
@@ -88,7 +87,7 @@ ensureProtectedData = function(data,
                  paste0("(", flagObservationStatus, ", ", flagMethod, ")"))
 
 
-        matchSet[, `:=`(c(flagCombination),
+        matchSet[, `:=`(c("flagCombination"),
                         paste0("(", flagObservationStatus, ", ", flagMethod, ")"))]
 
         invalidData =
