@@ -4,7 +4,8 @@
 \alias{ensureTimeSeriesImputed}
 \title{This function checks whether all time series within a dataset are imputed.}
 \usage{
-ensureTimeSeriesImputed(data, key, valueColumn = "Value", returnData = TRUE,
+ensureTimeSeriesImputed(data, key, valueColumn = "Value",
+  observationFlagVar = "flagObservationStatus", returnData = TRUE,
   normalised = TRUE, denormalisedKey = "measuredElement",
   getInvalidData = FALSE)
 }
@@ -16,6 +17,9 @@ Generally the set c('geographicAreaM49', 'measuredItemCPC',
 'measuredElement').}
 
 \item{valueColumn}{The column which contains the numeric values.}
+
+\item{observationFlagVar}{The variable name which corresponds to the
+observation status flag.}
 
 \item{returnData}{logical, whether the data should be returned}
 

@@ -5,6 +5,8 @@
 ##'     Generally the set c('geographicAreaM49', 'measuredItemCPC',
 ##'     'measuredElement').
 ##' @param valueColumn The column which contains the numeric values.
+##' @param observationFlagVar The variable name which corresponds to the
+##'     observation status flag.
 ##' @param returnData logical, whether the data should be returned
 ##' @param normalised logical, whether the data is normalised
 ##' @param denormalisedKey optional, only required if the input data is not
@@ -17,12 +19,11 @@
 ##'
 ##' @export
 ##'
-##' @importFrom faoswsProcessing remove0M
-##'
 
 ensureTimeSeriesImputed = function(data,
                                    key,
                                    valueColumn = "Value",
+                                   observationFlagVar = "flagObservationStatus",
                                    returnData = TRUE,
                                    normalised = TRUE,
                                    denormalisedKey = "measuredElement",
@@ -39,12 +40,16 @@ ensureTimeSeriesImputed = function(data,
                     requiredColumn = c(key, valueColumn),
                     returnData = FALSE)
 
-    dataRemoved0M =
-        remove0M(dataCopy, valueVars = valueColumn,
-                 flagVars = "flagObservationStatus")
-    check = dataRemoved0M[, sum(is.na(.SD[[valueColumn]])) == 0 |
-                            sum(is.na(.SD[[valueColumn]])) == .N,
-                          by = c(key)]
+    ## NOTE (Michael): Check for (0, M) entry. Since (0, M) is actually a
+    ##                 missing value, it will cause the test to fail as the
+    ##                 value 0 is not a misssing value.
+    if(nrow(dataCopy[dataCopy[[valueColumn]] == 0 &
+                     dataCopy[[observationFlagVar]] == "M", ]) > 0)
+        stop("(0, M) value exist, please remove them before proceeding with the test")
+
+    check = dataCopy[, sum(is.na(.SD[[valueColumn]])) == 0 |
+                       sum(is.na(.SD[[valueColumn]])) == .N,
+                     by = c(key)]
     ## unimputedTimeSeries = which(!check$V1)
     ## unimputedIndex = check[unimputedTimeSeries, key, with = FALSE]
     unimputedIndex = check[!check$V1, ]

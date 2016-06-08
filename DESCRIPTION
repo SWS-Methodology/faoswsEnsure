@@ -11,8 +11,6 @@ Depends:
     faoswsFlag,
     faoswsUtil,
     data.table
-Imports:
-    faoswsProcessing
 Suggests:
     ensurer,
     dplyr,
