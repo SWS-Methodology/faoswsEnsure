@@ -17,6 +17,8 @@
 ##'
 ##' @export
 ##'
+##' @importFrom faoswsProcessing remove0M
+##'
 
 ensureTimeSeriesImputed = function(data,
                                    key,
