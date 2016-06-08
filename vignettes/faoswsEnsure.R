@@ -34,13 +34,9 @@
 ##' core module in the Statistical Working System.
 ##'
 
-
-##' # Functionality
-
 ##' Before we begin, let us generate a simulated dataset which we will use to
 ##' illustrate the functionalities and provide example for the rest of the
 ##' document.
-
 
 ## Need to have missing column
 
@@ -50,27 +46,210 @@
 
 ## Need to have value in the wrong range
 
+library(data.table)
 test_data =
-    data.frame(geographicAreaM49 = rep("100", 10),
+    data.table(geographicAreaM49 = rep("100", 10),
                measuredItemCPC = rep("0111", 10),
                measuredElement = rep("5510", 10),
                timePointYears = as.character(2000:2009),
-               Value = rnorm(n),
+               Value = rnorm(10),
                flagObservationStatus =
                    c("E", "I", "I", "T", "", "", "M", "T", "", "M"),
                flagMethod =
                    c("q", "p", "i", "c", "u", "u", "e", "e", "-", "u"))
 
-##' ## ReturnData arguement
+
+##' ## Structure
+##'
+##' The purpose of the package is to standardise the test framework, and to
+##' avoid duplication of identical functions. Further, similar tests can be
+##' merged to form more generalised test in order to incorporate a broader scope
+##' of the potential problems.
+##'
+##' Developers of the Statistical Working System, should all contribut to this
+##' package, share the experience and data problems faced by each individual
+##' modules. This will eliminate the chances of solving the same problem accross
+##' different projects.
+##'
+##' To extend the functionality of the package, a new function must adhere to
+##' the standard of the package and have the following component.
+##'
+##' 1. When an error is detected, an error should be thrown with the `stop`
+##'    function.
+##'
+##' 2. The function should have a `returnData` arguement, when set to TRUE the
+##'    original data should be returned if no error was detected for sequential
+##'    tests. This is based on the same philosphy as the `ensurer` package.
+##'    Nevertheless, there are cases when we do not want to return the data and
+##'    simply test whether the data is valid, then the arguement can simply be
+##'    set to FALSE.
+##'
+##' 3. The function must have an `getInvalidData` arguement and outputs the
+##'    invalid data.
+##'
+##' To illustrate the structure, an example is given below.
 ##'
 
-##' ## getInvalidData arguement
+library(faoswsEnsure)
+
+##' This is the function to ensure the value of a variable is within the
+##' feasible range.
 ##'
+
+ensureValueRange
+
+##' ## 1. Return error when data is invalid
+##'
+##' Here we test whether the data is between in the range [0, 100] inclusive.
+##' The `indcludeEndPoint` arguement indicate that the value 0 and 100 are both
+##' acceptable. When `returnData` is TRUE, the original data is returned when
+
+## ensureValueRange(data = test_data,
+##                  ensureColumn = "Value",
+##                  min = 0,
+##                  max = 100,
+##                  includeEndPoint = TRUE,
+##                  returnData = TRUE,
+##                  getInvalidData = FALSE)
+
+##' ## 2. Return the data
+##'
+##' Here we take the same example data and the same test, but to render our data
+##' valid, we expand the range to (-Inf, Inf).
+##'
+##' As we can see from the printout, the data is now valid according to the test
+##' and the original data is returned.
+
+ensureValueRange(data = test_data,
+                 ensureColumn = "Value",
+                 min = -Inf,
+                 max = Inf,
+                 includeEndPoint = TRUE,
+                 returnData = TRUE,
+                 getInvalidData = FALSE)
+
+##' We can also silence the output by setting the `returnData` arguement to
+##' FALSE.
+##'
+##' This time, the data is valid and thus no error is issued but the data is no
+##' longer returned.
+
+ensureValueRange(data = test_data,
+                 ensureColumn = "Value",
+                 min = -Inf,
+                 max = Inf,
+                 includeEndPoint = TRUE,
+                 returnData = FALSE,
+                 getInvalidData = FALSE)
+
+##' ## 3. Obtain Invalid Data
+##'
+##' Testing for error is a preliminery, solving the problem is the goal. To ease
+##' the debugging process, the function should be able to return the invalid
+##' data.
+##'
+##' Below we revert to the same test as in section one where there are invalid
+##' data, instead of issuing the error, the invalid data is returned.
+##'
+##' Now the function returns value that are not within the [0, 100] range.
+##'
+
+ensureValueRange(data = test_data,
+                 ensureColumn = "Value",
+                 min = 0,
+                 max = 100,
+                 includeEndPoint = TRUE,
+                 returnData = TRUE,
+                 getInvalidData = TRUE)
 
 ##' # Example
+##'
+##' In this section, we provide a minimal set of tests for each type of
+##' validation that should be incorporated in all modules.
+##'
 
 ##' ## Input Validation
+##'
+##' For input validation, the recommended tests are:
+##'
+##' * The feasible range of the variables.
+##' * The validity of flags.
+##'
+##' Again an example is provided below, of course, there are additional tests
+##' specific for each domain that should be incorporated. Take the production
+##' domain for example, the production identity equation (Production = Area
+##' Harvested x Yield) must be satisfied.
+##'
+
+
+library(magrittr)
+test_data %>%
+    ensureValueRange(data = .,
+                     ensureColumn = "Value",
+                     min = -Inf,
+                     max = Inf,
+                     includeEndPoint = TRUE,
+                     returnData = TRUE,
+                     getInvalidData = FALSE) %>%
+    ensureFlagValidity(data = .,
+                       flagObservationVar = "flagObservationStatus",
+                       flagMethodVar = "flagMethod",
+                       returnData = TRUE,
+                       getInvalidData = FALSE)
+
 
 ##' ## Output Validation
+##'
+##' For the output validation, we recommend to test everything incorporated in
+##' the input validation, but with the following addition test:
+##'
+##' * The destination data cell is not protected
+##'
+
+
+test_data %>%
+    ensureValueRange(data = .,
+                     ensureColumn = "Value",
+                     min = -Inf,
+                     max = Inf,
+                     includeEndPoint = TRUE,
+                     returnData = TRUE,
+                     getInvalidData = FALSE) %>%
+    ensureFlagValidity(data = .,
+                       flagObservationVar = "flagObservationStatus",
+                       flagMethodVar = "flagMethod",
+                       returnData = TRUE,
+                       getInvalidData = FALSE) %>%
+    ensureProtectedData(data = .,
+                        domain = "agriculture",
+                        dataset = "aproduction",
+                        returnData = FALSE,
+                        getInvalidData = FALSE)
+
+
 
 ##' ## Module Validation
+##'
+##' Finally, all module should have module specific tests. These can be in the
+##' form of:
+##'
+##' * non-regression tests: Tests to verify new functionality implemented has
+##'   the intended effect.
+##'
+##' * non-regression tests: Tests to ensure new changes does not alter previous
+##'   requirements.
+##'
+##' In the case of production, a non-regression test is in place to ensure all
+##' time series are imputed where available. In case of future changes in
+##' methodology, the test will gurantee this requirement continue to be
+##' fulfilled.
+##'
+
+test_data %>%
+    ensureTimeSeriesImputed(data = .,
+                            key = c("geographicAreaM49",
+                                    "measuredItemCPC",
+                                    "measuredElement"),
+                            valueColumn = "Value",
+                            returnData = FALSE,
+                            getInvalidData = TRUE)
