@@ -1,0 +1,68 @@
+---
+title: "faoswsEnsure: Package for Input, Output and Module Validation"
+author: "Michael C. J. Kao"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{faoswsEnsure: Package for Input, Output and Module Validation}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+# Introduction
+
+This vignette provide an introduction to the testing framework designed for
+R modules of the Statistical Working System.
+
+Testing is an important aspect of all software development and integrated
+data analysis. Without testing, one can never be sure the reliability and
+validity of the end result.
+
+Further, when new development are introduced, there is no way to safeguard
+the program to continue provide the intended task.
+
+The concept is so important that a paradigm emerged focusing on writing the
+tests first prior to any development. This is known as [Test driven
+development (TDD)](https://en.wikipedia.org/wiki/Test-driven_development).
+
+In this introduction, we will not delve into the whole process of TDD.
+Rather, we will provide a brief explaination of the functionality of the
+package then provide simple illustration of how to build input, output and
+module tests for R modules.
+
+The R modules should fulfill these three requirements before being accepted as
+core module in the Statistical Working System.
+
+# Functionality
+Before we begin, let us generate a simulated dataset which we will use to
+illustrate the functionalities and provide example for the rest of the
+document.
+
+```{r }
+## Need to have missing column
+
+## Need to have invalid flag
+
+## Need to over-write protected data
+
+## Need to have value in the wrong range
+
+test_data =
+    data.frame(geographicAreaM49 = rep("100", 10),
+               measuredItemCPC = rep("0111", 10),
+               measuredElement = rep("5510", 10),
+               timePointYears = as.character(2000:2009),
+               Value = rnorm(n),
+               flagObservationStatus =
+                   c("E", "I", "I", "T", "", "", "M", "T", "", "M"),
+               flagMethod =
+                   c("q", "p", "i", "c", "u", "u", "e", "e", "-", "u"))
+```
+
+## ReturnData arguement
+
+## getInvalidData arguement
+
+# Example
+## Input Validation
+## Output Validation
+## Module Validation
