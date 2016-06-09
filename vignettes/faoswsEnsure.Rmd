@@ -8,29 +8,34 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+```
+
 # Introduction
 
-This vignette provide an introduction to the testing framework designed for
-R modules of the Statistical Working System.
+This vignette provide a gentle introduction to the testing framework designed
+for R modules of the Statistical Working System.
 
-Testing is an important aspect of all software development and integrated
-data analysis. Without testing, one can never be sure the reliability and
-validity of the end result.
-
-Further, when new development are introduced, there is no way to safeguard
-the program to continue provide the intended task.
+Testing is an crucial dimension of all software development and integrated data
+analysis. Without testing, one can never be certain ofthe reliability and
+validity of the end result. Moreover, when new developments are introduced,
+there exist no protection to safeguard the program to continue to perform the
+intended task.
 
 The concept is so important that a paradigm emerged focusing on writing the
 tests first prior to any development. This is known as [Test driven
 development (TDD)](https://en.wikipedia.org/wiki/Test-driven_development).
 
-In this introduction, we will not delve into the whole process of TDD.
-Rather, we will provide a brief explaination of the functionality of the
-package then provide simple illustration of how to build input, output and
-module tests for R modules.
+In this introduction, we will provide a brief explaination of the functionality
+and standards of the package then provide simple illustration of how to build
+input, output and module tests for R modules.
 
-The R modules should fulfill these three requirements before being accepted as
-core module in the Statistical Working System.
+It is necessary for an R modules to embrace all three requirement tests before
+being accepted as core module in the Statistical Working System.
+
+---
 
 Before we begin, let us generate a simulated dataset which we will use to
 illustrate the functionalities and provide example for the rest of the
@@ -38,6 +43,7 @@ document.
 
 ```{r }
 library(data.table)
+set.seed(587)
 test_data =
     data.table(geographicAreaM49 = rep("100", 10),
                measuredItemCPC = rep("0111", 10),
@@ -50,15 +56,17 @@ test_data =
                    c("q", "p", "i", "c", "u", "u", "e", "e", "-", "u"))
 ```
 
-## Structure
+---
 
-The purpose of the package is to standardise the test framework, and to
-avoid duplication of identical functions. Further, similar tests can be
-merged to form more generalised test in order to incorporate a broader scope
-of the potential problems.
+# Structure
+
+The purpose of the package is to standardise the test framework, and to avoid
+duplication of identical functions. Further, similar tests can be merged to form
+more generalised test in order to incorporate a broader scope of potential
+problems.
 
 Developers of the Statistical Working System, should all contribut to this
-package, share the experience and data problems faced by each individual
+package, share the experience and data problems present in each individual
 modules. This will eliminate the chances of solving the same problem accross
 different projects.
 
@@ -72,12 +80,12 @@ the standard of the package and have the following component.
    original data should be returned if no error was detected for sequential
    tests. This is based on the same philosphy as the
    [ensurer](https://cran.r-project.org/web/packages/ensurer/vignettes/ensurer.html)
-   package. Nevertheless, there are cases when we do not want to return the
-   data and simply test whether the data is valid, then the arguement can
-   simply be set to FALSE.
+   package. Nevertheless, there are cases where we do not want to return the
+   data and simply test whether the data is valid, then the arguement can simply
+   be set to FALSE.
 
-3. The function must have an `getInvalidData` arguement and outputs the
-   invalid data.
+3. The function must have an `getInvalidData` arguement and returns the invalid
+   data if any.
 
 To illustrate the structure, an example is given below.
 
@@ -86,9 +94,7 @@ To illustrate the structure, an example is given below.
 library(faoswsEnsure)
 ```
 
-This is the function to ensure the value of a variable is within the
-feasible range.
-
+This is a function in the package to ensure the value of a variable is confines to the specified feasible range.
 
 ```{r }
 ensureValueRange
@@ -96,9 +102,10 @@ ensureValueRange
 
 ## 1. Return error when data is invalid
 
-Here we test whether the data is between in the range [0, 100] inclusive.
-The `indcludeEndPoint` arguement indicate that the value 0 and 100 are both
-acceptable. When `returnData` is TRUE, the original data is returned when
+Here we test whether the data is between in the range **[0, 100]** inclusive. The
+`indcludeEndPoint` arguement indicate that the value 0 and 100 are both
+acceptable. Since our variable contains data contains negative value, the test
+is not passed and an error is thrown.
 
 ```{r error = TRUE, purl = FALSE}
 ensureValueRange(data = test_data,
@@ -113,10 +120,10 @@ ensureValueRange(data = test_data,
 ## 2. Return the data
 
 Here we take the same example data and the same test, but to render our data
-valid, we expand the range to (-Inf, Inf).
+valid, we expand the range to **(-Inf, Inf)**.
 
-As we can see from the printout, the data is now valid according to the test
-and the original data is returned.
+As we can see from the printout, the data is now valid according to the test and
+the complete original data is returned.
 
 ```{r }
 ensureValueRange(data = test_data,
@@ -150,10 +157,14 @@ Testing for error is a preliminery, solving the problem is the goal. To ease
 the debugging process, the function should be able to return the invalid
 data.
 
-Below we revert to the same test as in section one where there are invalid
-data, instead of issuing the error, the invalid data is returned.
+In addition, when developing validation modules, we may want to collect all the
+invalid data instead of terminating the program.
 
-Now the function returns value that are not within the [0, 100] range.
+Below we revert to the same test as in section one where there are invalid data,
+instead of issuing the error, the invalid data is returned by specify
+`getInvalidData` to FALSE.
+
+Now the function returns value that are not within the **[0, 100]** range.
 
 
 ```{r }
@@ -166,6 +177,8 @@ ensureValueRange(data = test_data,
                  getInvalidData = TRUE)
 ```
 
+---
+
 # Example
 
 In this section, we provide a minimal set of tests for each type of
@@ -177,6 +190,7 @@ For input validation, the recommended tests are:
 
 * The feasible range of the variables.
 * The validity of flags.
+* Missing values are correctly specified
 
 Again an example is provided below, of course, there are additional tests
 specific for each domain that should be incorporated. Take the production
@@ -189,7 +203,7 @@ library(magrittr)
 test_data %>%
     ensureValueRange(data = .,
                      ensureColumn = "Value",
-                     min = -Inf,
+                     min = 0,
                      max = Inf,
                      includeEndPoint = TRUE,
                      returnData = TRUE,
@@ -198,8 +212,58 @@ test_data %>%
                        flagObservationVar = "flagObservationStatus",
                        flagMethodVar = "flagMethod",
                        returnData = TRUE,
-                       getInvalidData = FALSE)
+                       getInvalidData = FALSE) %>%
+    ensureCorrectMissingValue(data = .,
+                              valueVar = "Value",
+                              flagObservationStatusVar = "flagObservationStatus",
+                              missingObservationFlag = "M",
+                              returnData = TRUE,
+                              getInvalidData = FALSE)
 ```
+
+Looks like our data is really dirty! Maybe we should fix it.
+
+```{r}
+corrected_data = copy(test_data)
+
+## Make all value positive
+corrected_data[, `:=`("Value", abs(Value))]
+
+## Correct flags
+corrected_data[, `:=`(c("flagObservationStatus", "flagMethod"), list("I", "e"))]
+
+## Correct Missing value
+corrected_data[flagObservationStatus == "M", `:=`("Value", NA)]
+```
+
+Lets perform the tests again.
+
+```{r}
+corrected_data %>%
+    ensureValueRange(data = .,
+                     ensureColumn = "Value",
+                     min = 0,
+                     max = Inf,
+                     includeEndPoint = TRUE,
+                     returnData = TRUE,
+                     getInvalidData = FALSE) %>%
+    ensureFlagValidity(data = .,
+                       flagObservationVar = "flagObservationStatus",
+                       flagMethodVar = "flagMethod",
+                       returnData = TRUE,
+                       getInvalidData = FALSE) %>%
+    ensureCorrectMissingValue(data = .,
+                              valueVar = "Value",
+                              flagObservationStatusVar = "flagObservationStatus",
+                              missingObservationFlag = "M",
+                              returnData = TRUE,
+                              getInvalidData = FALSE)
+```
+
+Now it would appear that the data is valid and we are ready to proceed to with
+data processing and analysis.
+
+
 
 ## Output Validation
 
@@ -208,9 +272,11 @@ the input validation, but with the following addition test:
 
 * The destination data cell is not protected
 
+The following code is not executed as to determine whether a destination cell is
+protected, connection to the Statistical Working System is required.
 
-```{r error = TRUE, purl = FALSE}
-test_data %>%
+```{r error = TRUE, purl = FALSE, eval = FALSE}
+corrected_data %>%
     ensureValueRange(data = .,
                      ensureColumn = "Value",
                      min = -Inf,
@@ -223,6 +289,12 @@ test_data %>%
                        flagMethodVar = "flagMethod",
                        returnData = TRUE,
                        getInvalidData = FALSE) %>%
+    ensureCorrectMissingValue(data = .,
+                              valueVar = "Value",
+                              flagObservationStatusVar = "flagObservationStatus",
+                              missingObservationFlag = "M"
+                              returnData = TRUE,
+                              getInvalidData = FALSE) %>%
     ensureProtectedData(data = .,
                         domain = "agriculture",
                         dataset = "aproduction",
@@ -238,22 +310,17 @@ form of:
 * non-regression tests: Tests to verify new functionality implemented has
   the intended effect.
 
-* non-regression tests: Tests to ensure new changes does not alter previous
+* regression tests: Tests to ensure new changes does not alter previous
   requirements.
 
-In the case of production, a non-regression test is in place to ensure all
-time series are imputed where available. In case of future changes in
-methodology, the test will gurantee this requirement continue to be
-fulfilled.
+In the case of production, one of the regression test is to ensure all time
+series are imputed where available. In case of future changes in methodology,
+the test will gurantee this requirement continue to be fulfilled.
 
 
 ```{r error = TRUE, purl = FALSE}
 library(faoswsProcessing)
-test_data %>%
-    remove0M(data = .,
-             valueVars = "Value",
-             flagVars = "flagObservationStatus",
-             missingFlag = "M") %>%
+corrected_data %>%
     ensureTimeSeriesImputed(data = .,
                             key = c("geographicAreaM49",
                                     "measuredItemCPC",
