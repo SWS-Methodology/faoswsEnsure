@@ -69,6 +69,7 @@ ensureIdentityCalculated = function(data,
         if(normalised){
             dataCopy = normalise(dataCopy)
         }
+        message("All identity calculated")
         if(returnData)
             return(dataCopy)
     }

@@ -105,7 +105,7 @@ ensureProtectedData = function(data,
             if(!normalised){
                 dataCopy = denormalise(dataCopy, denormalisedKey)
             }
-
+            message("Data can be safely saved back to database")
             if(returnData)
                 return(dataCopy)
         }

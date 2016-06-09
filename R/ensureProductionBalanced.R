@@ -61,6 +61,7 @@ ensureProductionBalanced = function(data,
             dataCopy = normalise(dataCopy)
         }
 
+        message("Production triplet is balanced")
         if(returnData)
             return(dataCopy)
     }

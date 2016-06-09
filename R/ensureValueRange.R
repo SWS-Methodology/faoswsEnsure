@@ -24,19 +24,19 @@ ensureValueRange = function(data,
                             includeEndPoint = TRUE,
                             returnData = TRUE,
                             getInvalidData = FALSE){
-
-    ensureDataInput(data = data,
+    dataCopy = copy(data)
+    ensureDataInput(data = dataCopy,
                     requiredColumn = ensureColumn,
                     returnData = FALSE)
 
     if(includeEndPoint){
         outOfRange =
-            which(data[[ensureColumn]] < min | data[[ensureColumn]] > max)
+            which(dataCopy[[ensureColumn]] < min | dataCopy[[ensureColumn]] > max)
     } else {
         outOfRange =
-            which(data[[ensureColumn]] <= min | data[[ensureColumn]] >= max)
+            which(dataCopy[[ensureColumn]] <= min | dataCopy[[ensureColumn]] >= max)
     }
-    invalidData = data[outOfRange, ]
+    invalidData = dataCopy[outOfRange, ]
 
     if(getInvalidData){
         return(invalidData)
@@ -45,8 +45,9 @@ ensureValueRange = function(data,
             stop("Variable contains values out of range")
         }
 
+        message("All values withing specified range")
         if(returnData)
-            return(data)
+            return(dataCopy)
     }
 }
 

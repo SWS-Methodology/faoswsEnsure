@@ -65,6 +65,7 @@ ensureFlagValidity = function(data,
             dataCopy = denormalise(dataCopy, denormalisedKey)
         }
 
+        message("All flag are valid")
         if(returnData)
             return(dataCopy)
     }

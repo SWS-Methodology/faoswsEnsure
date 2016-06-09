@@ -71,6 +71,7 @@ ensureTimeSeriesImputed = function(data,
             dataCopy = denormalise(dataCopy, denormalisedKey)
         }
 
+        message("All time series imputed where available")
         if(returnData)
             return(dataCopy)
     }

@@ -59,12 +59,13 @@ ensureNoConflictingZero = function(data,
         return(invalidData)
     } else {
         if(nrow(invalidData) > 0)
-            stop("Conflict value exist in production area harvested")
+            stop("Conflict value exist between variables")
 
         if(normalised){
             dataCopy = normalise(dataCopy)
         }
 
+        message("No conflicting value exist")
         if(returnData)
             return(dataCopy)
     }
