@@ -6,7 +6,8 @@
 calculated whereever possible.}
 \usage{
 ensureIdentityCalculated(data, areaVar, yieldVar, prodVar, returnData = TRUE,
-  normalised = TRUE, getInvalidData = FALSE)
+  normalised = TRUE, denormalisedKey = "measuredElement",
+  getInvalidData = FALSE)
 }
 \arguments{
 \item{data}{The data.table to be saved back to the SWS.}
@@ -20,6 +21,9 @@ ensureIdentityCalculated(data, areaVar, yieldVar, prodVar, returnData = TRUE,
 \item{returnData}{logical, whether the data should be returned.}
 
 \item{normalised}{logical, whether the data is normalised}
+
+\item{denormalisedKey}{optional, only required if the input data is not
+normalised.It is the name of the key that denormalises the data.}
 
 \item{getInvalidData}{logical, this will skip the test and extract the data
 that is invalid.}

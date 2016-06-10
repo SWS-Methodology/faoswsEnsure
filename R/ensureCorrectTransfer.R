@@ -7,8 +7,6 @@
 ##' @param parentData The animal slaughtered data from animal commodity.
 ##' @param childData The animal slaughtered data from meat commodity.
 ##' @param mappingTable The mapping table between the parent and the child.
-##' @param parentToChild logical, if true, slaughtered animal are transferred
-##'     from animal commodity to meat, otherwise the otherway around.
 ##' @param returnData logical, whether the data should be returned
 ##' @param getInvalidData logical, this will skip the test and extract the data
 ##'     that is invalid.

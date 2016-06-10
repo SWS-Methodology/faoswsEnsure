@@ -19,9 +19,6 @@ ensureCorrectTransfer(parentData, childData, mappingTable, returnData = TRUE,
 
 \item{getInvalidData}{logical, this will skip the test and extract the data
 that is invalid.}
-
-\item{parentToChild}{logical, if true, slaughtered animal are transferred
-from animal commodity to meat, otherwise the otherway around.}
 }
 \value{
 If getInvalidData is FALSE, then the data is returned when the test
