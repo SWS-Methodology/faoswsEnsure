@@ -48,8 +48,10 @@ ensureFlagValidity = function(data,
         with(flagTable[flagTable$Valid, ],
              paste0("(", flagObservationStatus, ", ", flagMethod, ")"))
 
+    ## The (NA, NA) flag is a special combination that is considered valid. See
+    ## issue #14.
     invalidFlagCombinations =
-        which(!dataFlagCombination %in% unique(tableFlagCombination))
+        which(!dataFlagCombination %in% unique(tableFlagCombination, "(NA, NA)"))
     invalidData = dataCopy[invalidFlagCombinations, ]
 
     if(getInvalidData){
