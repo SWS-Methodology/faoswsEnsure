@@ -89,7 +89,10 @@ ensureCorrectTransfer = function(parentData,
                                  list(Value_child - (Value_parent * share),
                                       Value_parent * 0.01))]
 
-    invalidData = parentChildMergedData[discrepency > tol, ]
+    invalidData =
+        parentChildMergedData[discrepency > tol |
+                              (is.na(Value_child) & !is.na(Value_parent)) |
+                              (!is.na(Value_child) & is.na(Value_parent)), ]
 
     if(getInvalidData){
         return(invalidData)
