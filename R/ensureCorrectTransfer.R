@@ -70,12 +70,12 @@ ensureCorrectTransfer = function(parentData,
     childMergeCol = intersect(colnames(childDataCopy),
                               colnames(mappingTable))
     childDataMapped = merge(childDataCopy, mappingTable,
-                            by = childMergeCol, all = TRUE)
+                            by = childMergeCol, all = FALSE)
 
     parentMergeCol = intersect(colnames(parentDataCopy),
                                colnames(mappingTable))
     parentDataMapped = merge(parentDataCopy, mappingTable,
-                             by = parentMergeCol, all = TRUE)
+                             by = parentMergeCol, all = FALSE)
 
     mergeAllCol = intersect(colnames(childDataMapped),
                             colnames(parentDataMapped))
