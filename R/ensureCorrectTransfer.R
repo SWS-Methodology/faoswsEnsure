@@ -88,11 +88,23 @@ ensureCorrectTransfer = function(parentData,
     parentChildMergedData[, `:=`(c("discrepency", "tol"),
                                  list(Value_child - (Value_parent * share),
                                       Value_parent * 0.01))]
+    discrepancy =
+        parentChildMergedData[["discrepency"]] > parentChildMergedData[["tol"]]
+    shareNonZeroDesync =
+        (is.na(parentChildMergedData[["Value_child"]]) &
+         !is.na(parentChildMergedData[["Value_parent"]]) &
+         parentChildMergedData[["share"]] != 0) |
+        (!is.na(parentChildMergedData[["Value_child"]]) &
+         is.na(parentChildMergedData[["Value_parent"]]) &
+         parentChildMergedData[["share"]] != 0)
+    shareZeroDesync =
+        parentChildMergedData[["share"]] == 0 &
+        parentChildMergedData[["Value_child"]] != 0
 
     invalidData =
-        parentChildMergedData[discrepency > tol |
-                              (is.na(Value_child) & !is.na(Value_parent)) |
-                              (!is.na(Value_child) & is.na(Value_parent)), ]
+        parentChildMergedData[discrepancy |
+                              shareNonZeroDesync |
+                              shareZeroDesync, ]
 
     if(getInvalidData){
         return(invalidData)
