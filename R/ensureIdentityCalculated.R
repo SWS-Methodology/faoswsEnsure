@@ -45,11 +45,12 @@ ensureIdentityCalculated = function(data,
          is.na(dataCopy[[yieldVar]]) +
          is.na(dataCopy[[prodVar]])) == 1
 
-    ## NOTE (Michael): However, yield can be a missing value when area
-    ##                 harvested is zero.
+    ## NOTE (Michael): However, yield can be a missing value when area harvested
+    ##                 is zero or production is zero.
     acceptableNACase =
-        (dataCopy[[areaVar]] == 0 &
-         is.na(dataCopy[[yieldVar]]))
+        (dataCopy[[areaVar]] == 0 |
+         dataCopy[[prodVar]] == 0 ) &
+        is.na(dataCopy[[yieldVar]])
 
     ## Return the index where identities are not calculated
     identityNotCalculated =
