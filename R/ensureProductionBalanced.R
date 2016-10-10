@@ -43,7 +43,20 @@ ensureProductionBalanced = function(data,
     ## NOTE (Michael): This is to account for difference due to
     ##                 rounding. The upper bound of the 1e-6 is the
     ##                 rounding performed by the system.
-    allowedDifference = max(dataCopy[[areaVar]] * 1e-6, 1)
+
+
+
+
+
+    areaVarVector=data.table(dataCopy[,mget(areaVar)])
+
+
+
+    areaVarVector[,threashold := get(areaVar) * 1e-6]
+    areaVarVector[threashold>=1,allowedDifference:=threashold]
+    areaVarVector[threashold<1,allowedDifference:=1]
+    allowedDifference=areaVarVector[,allowedDifference]
+
     imbalance = which(productionDifference > allowedDifference)
 
     invalidData = dataCopy[imbalance, ]
