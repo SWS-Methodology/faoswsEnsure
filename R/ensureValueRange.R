@@ -31,10 +31,10 @@ ensureValueRange = function(data,
 
     if(includeEndPoint){
         outOfRange =
-            which(dataCopy[[ensureColumn]] <= min | dataCopy[[ensureColumn]] >= max)
+            which(dataCopy[[ensureColumn]] < min | dataCopy[[ensureColumn]] > max)
     } else {
         outOfRange =
-            which(dataCopy[[ensureColumn]] < min | dataCopy[[ensureColumn]] > max)
+            which(dataCopy[[ensureColumn]] <= min | dataCopy[[ensureColumn]] >= max)
     }
     invalidData = dataCopy[outOfRange, ]
 
