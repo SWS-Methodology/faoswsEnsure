@@ -8,7 +8,7 @@ the flagValidTable.}
 ensureFlagValidity(data, flagObservationVar = "flagObservationStatus",
   flagMethodVar = "flagMethod", returnData = TRUE, normalised = TRUE,
   denormalisedKey = "measuredElement", flagTable = flagValidTable,
-  getInvalidData = FALSE)
+  getInvalidData = FALSE, removeInvalid = TRUE)
 }
 \arguments{
 \item{data}{The data to be checked}
@@ -30,6 +30,8 @@ the dataset flagValidTable in \pkg{faoswsFlag}}
 
 \item{getInvalidData}{logical, this will skip the test and extract the data
 that is invalid.}
+
+\item{removeInvalid}{Even if the original purpose of this function was to highlight}
 }
 \value{
 If getInvalidData is FALSE, then the data is returned when the test
