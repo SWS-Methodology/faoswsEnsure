@@ -1,3 +1,4 @@
+
 ##' This function checks whether the flags in the data are valid according to
 ##' the flagValidTable.
 ##'
@@ -13,12 +14,15 @@
 ##'     normalised.It is the name of the key that denormalises the data.
 ##' @param getInvalidData logical, this will skip the test and extract the data
 ##'     that is invalid.
+##' @param removeInvalid  Even if the original purpose of this function was to highlight
+##'
 ##' @return If getInvalidData is FALSE, then the data is returned when the test
 ##'     is cleared, otherwise an error. If getInvalidData is TRUE, then the
 ##'     subset of the data that is invalid is returned.
 ##'
+##'
 ##' @export
-##' @import faoswsFlag faoswsUtil
+##' @import faoswsFlag faoswsUtil faoswsProcessing
 ##'
 
 ensureFlagValidity = function(data,
@@ -28,7 +32,8 @@ ensureFlagValidity = function(data,
                               normalised = TRUE,
                               denormalisedKey = "measuredElement",
                               flagTable = flagValidTable,
-                              getInvalidData = FALSE){
+                              getInvalidData = FALSE,
+                              removeInvalid=TRUE){
 
     dataCopy = copy(data)
 
@@ -60,15 +65,33 @@ ensureFlagValidity = function(data,
         }
         return(invalidData)
     } else {
-        if(length(invalidFlagCombinations) > 1){
-            stop("Invalid Combination flag exist")
-        }
-        if(!normalised){
-            dataCopy = denormalise(dataCopy, denormalisedKey)
-        }
+        if(returnData){
+          if(length(invalidFlagCombinations) > 1){
+            if(removeInvalid){
+              dataCopy= removeInvalidFlag(dataCopy)
 
-        message("All flag are valid")
-        if(returnData)
+              if(!normalised){
+                dataCopy = denormalise(dataCopy, denormalisedKey)
+              }
+
+              return(dataCopy)
+            }
+            else{   stop("Invalid Combination flag exist")}
+
+          }else{
+
+            if(!normalised){
+              dataCopy = denormalise(dataCopy, denormalisedKey)
+            }
+
             return(dataCopy)
+        }
+        }
+        
+        return(dataCopy)
+        
     }
+
+
+    
 }

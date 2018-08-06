@@ -96,7 +96,7 @@ ensureProtectedData = function(data,
 
         if(getInvalidData){
             if(!normalised){
-                invalidData = denormalise(invalidData, denormalisedKey)
+                invalidData = normalise(invalidData, denormalisedKey)
             }
             return(invalidData)
         } else {
