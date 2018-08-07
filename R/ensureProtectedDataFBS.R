@@ -38,7 +38,7 @@
 ##' @import faoswsFlag
 
 
-ensureProtectedData2 = function (data, domain = "suafbs", dataset = "sua_unbalanced", 
+ensureProtectedDataFBS = function (data, domain = "suafbs", dataset = "sua_unbalanced", 
           areaVar = "geographicAreaM49", itemVar = "measuredItemChildCPC", 
           elementVar = "measuredElement", yearVar = "timePointYears", 
           flagObservationVar = "flagObservationStatus", flagMethodVar = "flagMethod", 
